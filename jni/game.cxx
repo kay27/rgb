@@ -29,20 +29,27 @@ void Init()
   glEnableVertexAttribArray(vPosition);
   glVertexAttribPointer(vPosition, 3, GL_FLOAT, false, 3*sizeof(GLfloat), (void*)0);
 
-  rx=-0.5; ry=0.5;
-  gx= 0.5; gy=0.5;
-  bx= 0.0; by=-0.5;
 //  rr = rg = rb = 1.0;
 
   rc=false; gc=false; bc=false;
   ri =-1; gi=-1; bi = -1;
 
-  rvx=Rand()/100;
-  rvy=Rand()/100;
-  gvx=Rand()/100;
-  gvy=Rand()/100;
-  bvx=Rand()/100;
-  bvy=Rand()/100;
+//  rx=-0.5; ry=0.5;
+//  gx= 0.5; gy=0.5;
+//  bx= 0.0; by=-0.5;
+
+  struct timeval now;
+  gettimeofday(&now, NULL);
+  srand(now.tv_usec);
+  rx=rand()*2-1; ry=rand()*2-1;
+  gx=rand()*2-1; gy=rand()*2-1;
+  bx=rand()*2-1; by=rand()*2-1;
+  rvx=Rand()-0.5;
+  rvy=Rand()-0.5;
+  gvx=Rand()-0.5;
+  gvy=Rand()-0.5;
+  bvx=Rand()-0.5;
+  bvy=Rand()-0.5;
 
   started = 1;
 }
@@ -85,9 +92,9 @@ void Render()
 //    if(!rc) fun1(rx, ry, rvx, rvy, delta, gx, 125000000, gy, 125000000, bx, 150000000, by, 150000000); else {rvx=0; rvy=0;}
 //    if(!gc) fun1(gx, gy, gvx, gvy, delta, rx, 100000000, ry, 100000000, bx, 150000000, by, 150000000); else {gvx=0; gvy=0;}
 //    if(!bc) fun1(bx, by, bvx, bvy, delta, rx, 100000000, ry, 100000000, gx, 125000000, gy, 125000000); else {bvx=0; bvy=0;}
-  if(!rc) fun1(rx, ry, rvx, rvy, delta, gx, 1200000000, gy, 1200000000, bx, 1200000000, by, 1200000000); else {rvx=0; rvy=0;}
-  if(!gc) fun1(gx, gy, gvx, gvy, delta, rx, 1200000000, ry, 1200000000, bx, 1200000000, by, 1200000000); else {gvx=0; gvy=0;}
-  if(!bc) fun1(bx, by, bvx, bvy, delta, rx, 1200000000, ry, 1200000000, gx, 1200000000, gy, 1200000000); else {bvx=0; bvy=0;}
+  if(!rc) fun1(rx, ry, rvx, rvy, delta/1000000, gx, 33000, gy, 33000, bx, 33000, by, 33000); else {rvx=0; rvy=0;}
+  if(!gc) fun1(gx, gy, gvx, gvy, delta/1000000, rx, 33000, ry, 33000, bx, 33000, by, 33000); else {gvx=0; gvy=0;}
+  if(!bc) fun1(bx, by, bvx, bvy, delta/1000000, rx, 33000, ry, 33000, gx, 33000, gy, 33000); else {bvx=0; bvy=0;}
 
   glUniform2f(vCrdR, rx, ry);
   glUniform2f(vCrdG, gx, gy);

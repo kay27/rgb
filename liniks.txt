@@ -1,2 +1,0 @@
-http://android-developers.blogspot.ru/2010/06/making-sense-of-multitouch.html
-http://developer.android.com/intl/ru/reference/android/view/MotionEvent.html
