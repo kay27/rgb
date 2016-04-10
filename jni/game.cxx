@@ -1,4 +1,5 @@
 #include "game.h"
+#include "jni2game.h"
 
 void Init()
 {
@@ -22,10 +23,19 @@ void Init()
   glEnableVertexAttribArray(vPosition);
   glVertexAttribPointer(vPosition, 3, GL_FLOAT, false, 3*sizeof(GLfloat), (void*)0);
 
-  glUniform2f(vCrdR, -0.5,  0.5);
-  glUniform2f(vCrdG,  0.5,  0.5);
-  glUniform2f(vCrdB,  0.0, -0.5);
+  rx=-0.5; ry=0.5;
+  gx=-0.5; gy=0.5;
+  bx= 0.0; by=-0.5;
+
+  rc = gc = bc = false;
+  ri = gi = bi = -1;
+
+  started = 1;
 }
+
+void MoveR(float x, float y){ rx=x; ry=y; }
+void MoveG(float x, float y){ gx=x; gy=y; }
+void MoveB(float x, float y){ bx=x; by=y; }
 
 void Resize(int w, int h)
 {
@@ -35,11 +45,21 @@ void Resize(int w, int h)
     xMulValue = float(w)/h;
     glUseProgram(rgbProgram);
     glUniform1f(vMul, xMulValue);
+//    glUseProgram(0);
   }
 }
 
 void Render()
 {
-  glUseProgram(rgbProgram);
+  if(!started) return;
+
+//  glClearColor(0.0, 0.0, 0.0, 1.0); //?????
+//  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //????
+
+//  glUseProgram(rgbProgram);
+  glUniform2f(vCrdR, rx, ry);
+  glUniform2f(vCrdG, gx, gy);
+  glUniform2f(vCrdB, bx, by);
   glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+//  glUseProgram(0);
 }

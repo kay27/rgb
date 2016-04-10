@@ -6,8 +6,10 @@ import android.content.Context;
 import android.content.pm.ConfigurationInfo;
 import android.content.res.Configuration;
 import android.opengl.GLSurfaceView;
+import android.graphics.Point;
 import android.os.Bundle;
-//import android.util.Log;
+//import android.util.DisplayMetrics;
+import android.view.Display;
 import android.view.MotionEvent;
 import android.view.Window;
 import android.view.WindowManager;
@@ -31,7 +33,10 @@ public class MainActivity extends Activity
     {
       requestWindowFeature(Window.FEATURE_NO_TITLE);
       getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-      mGLView = new MyGLSurfaceView(this);
+      Display display = getWindowManager().getDefaultDisplay();
+      Point size = new Point();
+      display.getSize(size);
+      mGLView = new MyGLSurfaceView(this, size.x, size.y);
       setContentView(mGLView);
     }
     else
@@ -66,9 +71,12 @@ public class MainActivity extends Activity
 
 class MyGLSurfaceView extends GLSurfaceView
 {
-  public MyGLSurfaceView(Context context)
+  public MyGLSurfaceView(Context context, int w, int h)
   {
     super(context);
+
+    halfH=w/2; halfW=h/2;
+
     setEGLContextClientVersion(2);
     mRenderer = new MyRenderer();
 //    setPreserveEGLContextOnPause(true); //???fix
@@ -79,16 +87,53 @@ class MyGLSurfaceView extends GLSurfaceView
   public boolean onTouchEvent(final MotionEvent ev)
   {
     int action = ev.getAction();
-    if(action == MotionEvent.ACTION_MOVE)
+    if((action & MotionEvent.ACTION_MASK) == MotionEvent.ACTION_MOVE)
     {
       int count = ev.getPointerCount();
+      for (int i = 0; i < count; i++)
+      {
+        float x=ev.getX(i)/halfH-1, y=1-ev.getY(i)/halfW;
+        nativeMove(ev.getPointerId(i), x, y);
+      }
+    }
+    else
+    {
+      int id = ev.getPointerId(ev.getActionIndex());
+      float x=ev.getRawX()/halfH-1, y=1-ev.getRawY()/halfW;
+    switch (action & MotionEvent.ACTION_MASK)
+    {
+      case MotionEvent.ACTION_DOWN: //nativeDrag(0,x,y); id0=id; break;
+      case MotionEvent.ACTION_POINTER_DOWN:
+        nativeDrag(id, x, y);
+//        if(id1==-1) { nativeDrag(1,x,y); id1=id; }
+//        else if(id2==-1) { nativeDrag(2,x,y); id2=id; }
+        break;
+      case MotionEvent.ACTION_UP: //nativeDrop(0, x, y); id0=-1; break;
+
+      case MotionEvent.ACTION_POINTER_UP:
+        nativeDrop(id, x, y);
+//        if(id==id1) { nativeDrop(1, x, y); id1=-1; }
+//        else if(id==id2) { nativeDrop(2, x, y); id2=-1; }
+        break;
+
+      case MotionEvent.ACTION_MOVE:
+        nativeMove(id, x, y);
+//        if(id==id0) nativeMove(0, x, y);
+//        else if(id == id1) nativeMove(1, x, y);
+//        else if(id == id2) nativeMove(2, x, y);
+        break;
+}
     }
     return true;
   }
 
   private MyRenderer mRenderer;
+  private int id0=-1, id1=-1, id2=-1;
+  private float halfW, halfH;
 
-  private static native void nativeKeyPress();
+  private static native void nativeDrag(int count, float x, float y);
+  private static native void nativeMove(int count, float x, float y);
+  private static native void nativeDrop(int count, float x, float y);
 
 }
 
