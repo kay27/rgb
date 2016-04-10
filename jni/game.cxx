@@ -65,11 +65,12 @@ void Resize(int w, int h)
 void fun1(float &rx, float &ry, float &rvx, float &rvy, const float delta, const float gx, const float mul1x, const float gy, const float mul1y, const float bx, const float mul2x, const float by, const float mul2y)
 {
   rx += rvx;
-  if(((rx>1)&&(rvx>0)) || ((rx<-1)&&(rvx<0))) rvx=-rvx;
-  ry += rvy;
-  if(((ry>1)&&(rvy>0)) || ((ry<-1)&&(rvy<0))) rvy=-rvy;
   rvx+=(gx-rx)*delta/mul1x + (bx-rx)*delta/mul2x; 
+  if(rx>1){rx=0.9999999; rvx=0;} if(rx<-1){rx=-0.9999999;rvx=0;}
+  ry += rvy;
   rvy+=(gy-ry)*delta/mul1y + (by-ry)*delta/mul2y; 
+//  if(((ry>1)&&(rvy>0)) || ((ry<-1)&&(rvy<0))) rvy=-rvy;
+  if(ry>1){ry=0.9999999; rvy=0;} if(ry<-1){ry=-0.9999999;rvy=0;}
 }
 
 void Render()
@@ -107,13 +108,13 @@ void Drag(int n, float x, float y)
 //    else if((!gc) && ((gd<=rd)||rc) && ((gd<=bd)||bc)) { gc=true; gi=n; gdx=gx-x; gdy=gy-y; }
 
 
-    float ddd=(rx-x)/xMulValue, qqq=ry-y; float rd=sqrt(ddd*ddd+qqq*qqq);
-          ddd=(gx-x)/xMulValue, qqq=gy-y; float gd=sqrt(ddd*ddd+qqq*qqq);
-          ddd=(bx-x)/xMulValue, qqq=by-y; float bd=sqrt(ddd*ddd+qqq*qqq);
+    float ddd=(rx-x)*xMulValue, qqq=ry-y; float rd=sqrt(ddd*ddd+qqq*qqq);
+          ddd=(gx-x)*xMulValue, qqq=gy-y; float gd=sqrt(ddd*ddd+qqq*qqq);
+          ddd=(bx-x)*xMulValue, qqq=by-y; float bd=sqrt(ddd*ddd+qqq*qqq);
 
          if((!rc) && ((rd<=gd)||gc) && ((rd<=bd)||bc)) { rc=true; ri=n; rdx=0; rx=x; rdy=0; ry=y; }
-    else if((!bc) && ((bd<=rd)||rc) && ((bd<=gd)||gc)) { bc=true; bi=n; gdx=0; gx=x; gdy=0; gy=y; }
-    else if((!gc) && ((gd<=rd)||rc) && ((gd<=bd)||bc)) { gc=true; gi=n; bdx=0; bx=x; bdy=0; by=y; }
+    else if((!bc) && ((bd<=rd)||rc) && ((bd<=gd)||gc)) { bc=true; bi=n; bdx=0; bx=x; bdy=0; by=y; }
+    else if((!gc) && ((gd<=rd)||rc) && ((gd<=bd)||bc)) { gc=true; gi=n; gdx=0; gx=x; gdy=0; gy=y; }
 
 }
 
