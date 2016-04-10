@@ -94,14 +94,18 @@ class MyGLSurfaceView extends GLSurfaceView
 //      }
     else if(action == MotionEvent.ACTION_DOWN)
       nativeDrag(ev.getPointerId(0), ev.getX(0)/halfH-1, 1-ev.getY(0)/halfW);
+//      nativeDrag(ev.getPointerId(0), ev.getRawX()/halfH-1, 1-ev.getRawY()/halfW);
+//      nativeDrag(ev.getPointerId(0), ev.getX(0)/halfH-1, 1-ev.getY(0)/halfW);
     else if(action == MotionEvent.ACTION_POINTER_DOWN)
-//      nativeDrag(ev.getPointerId(ev.getActionIndex()), ev.getX()/halfH-1, 1-ev.getY()/halfW);
       nativeDrag(ev.getPointerId(ev.getActionIndex()), ev.getX(ev.getActionIndex())/halfH-1, 1-ev.getY(ev.getActionIndex())/halfW);
+//      nativeDrag(ev.getPointerId(ev.getActionIndex()), ev.getX()/halfH-1, 1-ev.getY()/halfW);
     else if(action == MotionEvent.ACTION_UP)
       nativeDrop(ev.getPointerId(0), ev.getX(0)/halfH-1, 1-ev.getY(0)/halfW);
+//      nativeDrop(ev.getPointerId(0), ev.getRawX()/halfH-1, 1-ev.getRawY()/halfW);
+//      nativeDrop(ev.getPointerId(0), ev.getX(0)/halfH-1, 1-ev.getY(0)/halfW);
     else if(action == MotionEvent.ACTION_POINTER_UP)
-//      nativeDrop(ev.getPointerId(ev.getActionIndex()), ev.getX()/halfH-1, 1-ev.getY()/halfW);
       nativeDrop(ev.getPointerId(ev.getActionIndex()), ev.getX(ev.getActionIndex())/halfH-1, 1-ev.getY()/halfW);
+//      nativeDrop(ev.getPointerId(ev.getActionIndex()), ev.getX()/halfH-1, 1-ev.getY()/halfW);
 //    else if(action == MotionEvent.ACTION_POINTER_DOWN)
 //      for (int i = 0; i < ev.getPointerCount(); i++)
 //        nativeDrag(ev.getPointerId(i), ev.getX(i)/halfH-1, 1-ev.getY(i)/halfW);

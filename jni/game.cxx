@@ -24,7 +24,7 @@ void Init()
   glVertexAttribPointer(vPosition, 3, GL_FLOAT, false, 3*sizeof(GLfloat), (void*)0);
 
   rx=-0.5; ry=0.5;
-  gx=-0.5; gy=0.5;
+  gx= 0.5; gy=0.5;
   bx= 0.0; by=-0.5;
 
   rc = gc = bc = false;

@@ -30,6 +30,7 @@ extern "C"
 {
   JNIEXPORT void Java_com_kay27_RGB_MyGLSurfaceView_nativeDrag(JNIEnv* env, jobject thiz, jint n, jfloat x, jfloat y)
   {
+//    if(!started) return;
 //    float rd=sqrt(pow((rx-x)*xMulValue,2)+pow(ry-y,2));
 //    float gd=sqrt(pow((gx-x)*xMulValue,2)+pow(gy-y,2));
 //    float bd=sqrt(pow((bx-x)*xMulValue,2)+pow(by-y,2));
