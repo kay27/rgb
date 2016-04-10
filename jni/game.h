@@ -8,7 +8,7 @@
 
   static GLuint vb;
   static GLint rgbProgram, vMul, vCrdR, vCrdG, vCrdB, vPosition;
-  static GLfloat xMulValue;
+  static GLfloat xMulValue = 1;
   static GLfloat rx, ry, gx, gy, bx, by;
   static bool rc, gc, bc;
   static int ri, gi, bi;

@@ -79,51 +79,35 @@ class MyGLSurfaceView extends GLSurfaceView
 
     setEGLContextClientVersion(2);
     mRenderer = new MyRenderer();
-//    setPreserveEGLContextOnPause(true); //???fix
     setRenderer(mRenderer);
-//    requestRender(); //temp
   }
 
   public boolean onTouchEvent(final MotionEvent ev)
   {
-    int action = ev.getAction();
-    if((action & MotionEvent.ACTION_MASK) == MotionEvent.ACTION_MOVE)
-    {
-      int count = ev.getPointerCount();
-      for (int i = 0; i < count; i++)
-      {
-        float x=ev.getX(i)/halfH-1, y=1-ev.getY(i)/halfW;
-        nativeMove(ev.getPointerId(i), x, y);
-      }
-    }
-    else
-    {
-      int id = ev.getPointerId(ev.getActionIndex());
-      float x=ev.getRawX()/halfH-1, y=1-ev.getRawY()/halfW;
-    switch (action & MotionEvent.ACTION_MASK)
-    {
-      case MotionEvent.ACTION_DOWN: //nativeDrag(0,x,y); id0=id; break;
-      case MotionEvent.ACTION_POINTER_DOWN:
-        nativeDrag(id, x, y);
-//        if(id1==-1) { nativeDrag(1,x,y); id1=id; }
-//        else if(id2==-1) { nativeDrag(2,x,y); id2=id; }
-        break;
-      case MotionEvent.ACTION_UP: //nativeDrop(0, x, y); id0=-1; break;
-
-      case MotionEvent.ACTION_POINTER_UP:
-        nativeDrop(id, x, y);
-//        if(id==id1) { nativeDrop(1, x, y); id1=-1; }
-//        else if(id==id2) { nativeDrop(2, x, y); id2=-1; }
-        break;
-
-      case MotionEvent.ACTION_MOVE:
-        nativeMove(id, x, y);
-//        if(id==id0) nativeMove(0, x, y);
-//        else if(id == id1) nativeMove(1, x, y);
-//        else if(id == id2) nativeMove(2, x, y);
-        break;
-}
-    }
+    int action = ev.getActionMasked();
+    if(action == MotionEvent.ACTION_MOVE)
+      for (int i = 0; i < ev.getPointerCount(); i++)
+        nativeMove(ev.getPointerId(i), ev.getX(i)/halfH-1, 1-ev.getY(i)/halfW);
+//      {
+//        int id=ev.getPointerId(i);
+//        nativeMove(id, ev.getX(id)/halfH-1, 1-ev.getY(id)/halfW);
+//      }
+    else if(action == MotionEvent.ACTION_DOWN)
+      nativeDrag(ev.getPointerId(0), ev.getX(0)/halfH-1, 1-ev.getY(0)/halfW);
+    else if(action == MotionEvent.ACTION_POINTER_DOWN)
+//      nativeDrag(ev.getPointerId(ev.getActionIndex()), ev.getX()/halfH-1, 1-ev.getY()/halfW);
+      nativeDrag(ev.getPointerId(ev.getActionIndex()), ev.getX(ev.getActionIndex())/halfH-1, 1-ev.getY(ev.getActionIndex())/halfW);
+    else if(action == MotionEvent.ACTION_UP)
+      nativeDrop(ev.getPointerId(0), ev.getX(0)/halfH-1, 1-ev.getY(0)/halfW);
+    else if(action == MotionEvent.ACTION_POINTER_UP)
+//      nativeDrop(ev.getPointerId(ev.getActionIndex()), ev.getX()/halfH-1, 1-ev.getY()/halfW);
+      nativeDrop(ev.getPointerId(ev.getActionIndex()), ev.getX(ev.getActionIndex())/halfH-1, 1-ev.getY()/halfW);
+//    else if(action == MotionEvent.ACTION_POINTER_DOWN)
+//      for (int i = 0; i < ev.getPointerCount(); i++)
+//        nativeDrag(ev.getPointerId(i), ev.getX(i)/halfH-1, 1-ev.getY(i)/halfW);
+//    else if(action == MotionEvent.ACTION_POINTER_UP)
+//      for (int i = 0; i < ev.getPointerCount(); i++)
+//        nativeDrop(ev.getPointerId(i), ev.getX(i)/halfH-1, 1-ev.getY(i)/halfW);
     return true;
   }
 

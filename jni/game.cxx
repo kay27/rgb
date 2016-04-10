@@ -45,7 +45,6 @@ void Resize(int w, int h)
     xMulValue = float(w)/h;
     glUseProgram(rgbProgram);
     glUniform1f(vMul, xMulValue);
-//    glUseProgram(0);
   }
 }
 
@@ -53,13 +52,8 @@ void Render()
 {
   if(!started) return;
 
-//  glClearColor(0.0, 0.0, 0.0, 1.0); //?????
-//  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //????
-
-//  glUseProgram(rgbProgram);
   glUniform2f(vCrdR, rx, ry);
   glUniform2f(vCrdG, gx, gy);
   glUniform2f(vCrdB, bx, by);
   glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-//  glUseProgram(0);
 }
