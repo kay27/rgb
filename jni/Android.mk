@@ -6,8 +6,9 @@ LOCAL_MODULE := rgb
 
 LOCAL_SRC_FILES := \
   game.cxx \
-  shader.cxx \
   jni2game.cxx \
+  shader.cxx \
+  sound.cxx \
 
 #LOCAL_CPPFLAGS := -std=c++11
 
