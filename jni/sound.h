@@ -47,14 +47,11 @@
       void Pause();
       void Clear();
       void Continue();
-      void NextNoiseValue();
-      void Noise(short *buffer, unsigned length, unsigned freq);
-      void MakeNoise(unsigned freq);
 
     protected:
       SLAudio *a;
-      short noiseValue;
-      int sampleRate, noiseReminder;
+//      short noiseValue;
+      int sampleRate/*, noiseReminder*/;
   };
 
 #endif // #ifndef H_SOUND_GLUKALO

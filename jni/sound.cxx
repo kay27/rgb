@@ -26,8 +26,8 @@ bool SLAudio::CreateEngine()
   result = (*mix)->Realize(mix, SL_BOOLEAN_FALSE);
   if(result != SL_RESULT_SUCCESS) return false;
 
-  result = (*mix)->GetInterface(mix, SL_IID_ENVIRONMENTALREVERB, &reverb);
-  if(result == SL_RESULT_SUCCESS) result = (*reverb)->SetEnvironmentalReverbProperties(reverb, &REVERB_SETTINGS);
+//  result = (*mix)->GetInterface(mix, SL_IID_ENVIRONMENTALREVERB, &reverb);
+//  if(result == SL_RESULT_SUCCESS) result = (*reverb)->SetEnvironmentalReverbProperties(reverb, &REVERB_SETTINGS);
 
   return true;
 }
@@ -36,7 +36,7 @@ void SLAudio::DestroyEngine()
 {
   if (mix != nullptr) (*mix)->Destroy(mix);
   mix = nullptr;
-  reverb = nullptr;
+//  reverb = nullptr;
   if (engine != nullptr) (*engine)->Destroy(engine);
   engine = nullptr;
   itf = nullptr;
@@ -80,7 +80,7 @@ bool SLAudio::CreatePlayer()
   result = (*bq)->RegisterCallback(bq, bqPlayerCallback, NULL);
   if(result != SL_RESULT_SUCCESS) return false;
 
-  (*player)->GetInterface(player, SL_IID_EFFECTSEND, &effect);
+//  (*player)->GetInterface(player, SL_IID_EFFECTSEND, &effect);
 
   (*player)->GetInterface(player, SL_IID_VOLUME, &volume);
 
@@ -97,7 +97,7 @@ void SLAudio::DestroyPlayer()
   player = nullptr;
   play = nullptr;
   bq = nullptr;
-  effect = nullptr;
+//  effect = nullptr;
   volume = nullptr;
 }
 
@@ -131,44 +131,16 @@ void SLAudio::Start()
 MyAudio::MyAudio()
 {
   sampleRate = MY_AUDIO_SAMPLE_RATE;
-  noiseReminder = 0;
-  NextNoiseValue();
+//  noiseReminder = 0;
+//  NextNoiseValue();
   a = new SLAudio();
   if(a != nullptr) a->Clear();
-}
-
-void MyAudio::MakeNoise(unsigned freq)
-{
-  Noise((short*)nextsoundbuffer, MY_AUDIO_BUFFER_SIZE, freq);
 }
 
 MyAudio::~MyAudio()
 {
   if(a) delete a;
   a = NULL;
-}
-
-void MyAudio::NextNoiseValue()
-{
-  noiseValue = (rand() % (MY_AUDIO_NOISE_VOLUME<<1)) - MY_AUDIO_NOISE_VOLUME;
-}
-
-void MyAudio::Noise(short *buffer, unsigned length, unsigned freq)
-{
-  short *dst = buffer;
-  short *stop = dst + sizeof(short)*length;
-
-  while(dst < stop)
-  {
-    *(dst++) = noiseValue;
-
-    noiseReminder += freq;
-    if (noiseReminder < sampleRate)
-      continue;
-
-    noiseReminder %= sampleRate;
-    NextNoiseValue();
-  }
 }
 
 bool MyAudio::Play()

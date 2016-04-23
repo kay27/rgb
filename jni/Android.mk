@@ -10,8 +10,8 @@ LOCAL_SRC_FILES := \
   shader.cxx \
   sound.cxx \
 
-#LOCAL_CPPFLAGS := -std=c++11
+LOCAL_CPPFLAGS := -std=c++11
 
-LOCAL_LDLIBS := -lGLESv2
+LOCAL_LDLIBS := -lGLESv2 -lOpenSLES
 
 include $(BUILD_SHARED_LIBRARY)
